@@ -1,0 +1,44 @@
+{
+  "cliente": [
+    {
+      "id": "iEuOBYkU",
+      "name": "Jeferson Silva",
+      "email": "jeferson@email.com"
+    },
+    {
+      "id": "0kFaJHB2",
+      "name": "Carlos Mota",
+      "email": "carlos@email.com"
+    },
+    {
+      "id": "ukjXyUuM",
+      "name": "Daniel Ferreira",
+      "email": "daniel@email.com"
+    },
+    {
+      "id": "BDUDxb6F",
+      "name": "Mariana Santos",
+      "email": "marisantos@email.com"
+    },
+    {
+      "id": "d5fE_asz",
+      "name": "Nome Sobrenome",
+      "email": "nome@email.com"
+    },
+    {
+      "id": "d5fE_a6p",
+      "name": "Carlos Bahia",
+      "email": "cbahia@email.com"
+    },
+    {
+      "id": "_UMkiH_7",
+      "name": "Nome Sobrenome",
+      "email": "nome@email.com"
+    },
+    {
+      "id": "d5fE_asz",
+      "name": "Nome Sobrenome",
+      "email": "nome@email.com"
+    }
+  ]
+}

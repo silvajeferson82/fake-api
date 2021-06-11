@@ -1,0 +1,31 @@
+{
+  "debitos": [
+    {
+      "usuario_nome": "",
+      "usuario_documento": "",
+      "usuario_email": "",
+      "usuario_telefone": "",
+      "usuario_data_nascimento": "",
+      "cobranca_descricao": "",
+      "cobranca_valor": 0,
+      "cobranca_boleto_aceite": true,
+      "cobranca_boleto_parcela": 0,
+      "pc_juros": "",
+      "pc_multa": "",
+      "vencimento": "",
+      "cobranca_numero_cliente_credor": "",
+      "pc_tempo_negociacao": "",
+      "pc_desconto": 0,
+      "endereco_rua": "",
+      "endereco_numero": "",
+      "endereco_complemento": "",
+      "endereco_bairro": "",
+      "endereco_cidade": "",
+      "endereco_estado": "",
+      "endereco_cep": "",
+      "created_at": "",
+      "updated_at": ""
+    }
+  ],
+  "cliente": []
+}
