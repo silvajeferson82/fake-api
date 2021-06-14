@@ -5,15 +5,17 @@ const low = require("lowdb");
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
 const pagueRouter = require("./routes/pagueServer");
+require('dotenv/config');
 
-const PORT = process.env.PORT || 8080;
+
+const PORT = process.env.PORT || 9107;
 
 const FileSync = require("lowdb/adapters/FileSync");
 
 const adapter = new FileSync("pagueDB.json");
 const db = low(adapter);
 
-db.defaults({ negotiation: [] }).write();
+db.defaults({ debitos:[] }).write();
 
 const options = {
 	definition: {
@@ -25,7 +27,7 @@ const options = {
 		},
 		servers: [
 			{
-				url: "http://localhost:8080",
+				url: "",
 			},
 		],
 	},
@@ -44,6 +46,6 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 
-app.use("/Negotiation", pagueRouter);
+app.use("/Debitos", pagueRouter);
 
-app.listen(PORT, () => console.log(`The server is running on port ${PORT}`));
+app.listen(PORT);

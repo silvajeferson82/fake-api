@@ -1,66 +1,63 @@
 const express = require("express");
 const router = express.Router();
-const { nanoid } = require("nanoid");
+const {v4:uuidv4} = require("uuid");
+// const format = require("date-fns")
 
-const idLength = 8;
 
-
-//Lista Todos as negociações
+//Lista Todos os Débitos
  /**
   * @swagger
   * tags:
-  *   name: Negotiation
-  *   description: Routes Nogociation
+  *   name: Debitos
+  *   description: Debitos Routes
   */
 
 /**
  * @swagger
- * /negotiation:
+ * /debitos/listar:
  *   get:
- *     tags: [Negotiations]
+ *     tags: [Debitos]
  *     responses:
  *       200:
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Negotiation'
- */
+ *         description: Listagem Registro de débitos
+*         content:
+*           application/json:
+*             schema:
+*               type: array
+*/
 
-router.get("/", (req, res) => {
-	const debito = req.app.db.get("negotiation");
+router.get("/listar", (req, res) => {
+	const debito = req.app.db.get("debitos");
 
 	res.send(debito);
 });
 
-//Busca Negociação por ID
+//Busca Debito por ID
 /**
  * @swagger
- * /negotiation/{id}:
+ * /debitos/listar/debito_id:
  *   get:
- *     summary: Get the Cliente by id
- *     tags: [Negotiations]
+ *     tags: [Debitos]
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: debito_id
+ *         example: 4343g43jg-kh3i4h343-3434
  *         schema:
  *           type: string
  *         required: true
- *         description: The client id
+ *         description: debito_id
  *     responses:
  *       200:
- *         description: The client description by id
+ *         description: Débito encontrado por ID
  *         contens:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Negotiation'
  *       404:
- *         description: The client was not found
+ *         description: Débito não encontrado
  */
 
-router.get("/:id", (req, res) => {
-  const debito = req.app.db.get("negotiation").find({ id: req.params.id }).value();
+router.get("/listar/debito_id", (req, res) => {
+  const debito = req.app.db.get("debitos").find({ debito_id: req.params.debito_id }).value();
 
   if(!debito){
     res.sendStatus(404)
@@ -69,39 +66,99 @@ router.get("/:id", (req, res) => {
 	res.send(debito);
 });
 
-
-//Cria novo Clientes
 /**
  * @swagger
- * /negotiation:
+ * /debitos/registrar:
  *   post:
- *     summary: Create a new client
- *     tags: [Negotiations]
+ *     tags: [Debitos]
  *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/Negotiation'
+ *     parameters:
+ *      - name: body
+ *        in: body
+ *        description: ''
+ *        required: true
+ *        schema:
+ *          type: object
+ *          properties:
+ *              usuario_nome:
+ *                  type: string
+ *                  example: 'teste 45'	
+ *              usuario_documento:
+ *                  type: string
+ *                  example: '4545454545454545'
+ *              usuario_data_nascimento:
+ *                  type: string
+ *                  example: 'YYYY-MM-DD'
+ *              usuario_email:
+ *                  type: string
+ *                  example: 'email@email.com'
+ *              usuario_telefone:
+ *                  type: string
+ *                  example: '00-00000-0000'
+ *              cobranca_descricao:
+ *                  type: string
+ *                  example: 'Sobre a cobrança'
+ *              cobranca_valor:
+ *                  type: number
+ *                  example: '900.50'
+ *              pc_juros:
+ *                  type: number
+ *                  example: '2.5'
+ *              pc_multa:
+ *                  type: number
+ *                  example: '1.5'
+ *              pc_tempo_negociacao:
+ *                  type: number
+ *                  example: '2.0'
+ *              pc_desconto:
+ *                  type: number
+ *                  example: '0.0'
+ *              vencimento: 
+ *                  type: string
+ *                  example: 'YYYY-MM-DD'
+ *              cobranca_numero_cliente_credor: 
+ *                  type: number
+ *                  example: '222.3'
+ *              endereco_cep:
+ *                  type: string
+ *                  example: '66666-555'
+ *              endereco_estado:
+ *                  type: string
+ *                  example: 'PA'
+ *              endereco_complemento:
+ *                  type: string
+ *                  example: 'Proximo a praça'
+ *              endereco_bairro: 
+ *                  type: string
+ *                  example: 'Cruzeiro'
+ *              endereco_cidade: 
+ *                  type: string
+ *                  example: 'Ananindeua'
+ *              endereco_rua:
+ *                  type: string
+ *                  example: 'Rua do Meio'
+ *              endereco_numero:
+ *                  type: string
+ *                  example: '25'
  *     responses:
  *       200:
- *         description: The client was successfully created
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Negociation'
+ *         description: Registro de debito criado com sucesso
+ *
  *       500:
  *         description: Some server error
  */
 
-router.post("/", (req, res) => {
+router.post("/registrar", (req, res) => {
+	const dateNow = new Date()
+	// const dateNow = format(new Date(),"yyyy-mm-dd");
 	try {
 		const debito = {
-			id: nanoid(idLength),
+			debito_id: uuidv4(),
+			created_at: dateNow,
 			...req.body,
 		};
 
-    req.app.db.get("negotiation").push(debito).write();
+    req.app.db.get("debitos").push(debito).write();
     
     res.send(debito)
 	} catch (error) {
@@ -109,77 +166,69 @@ router.post("/", (req, res) => {
 	}
 });
 
-//Atualizar cliente por ID
+//Atualizar Debito por ID
 /**
  * @swagger
- * /negotiation/{id}:
+ * /debitos/alterar/debito_id:
  *  put:
- *    summary: Update the client by the id
- *    tags: [Negotiations]
+ *    tags: [Debitos]
  *    parameters:
- *      - in: path
- *        name: id
- *        schema:
- *          type: string
+ *      - name: debito_id
+ *        in: body
+ *        exemplo: 123-dedf-456-hhjj
  *        required: true
- *        description: The client id
- *    requestBody:
- *      required: true
- *      content:
- *        application/json:
- *          schema:
- *            $ref: '#/components/schemas/Negotiation'
+ *        schema:
+ *          type: object
+ *          properties:
+ *            debito_id:
+ *             type: string
+ *             example: jkjjkj-we3ee3e3-jhjhh
  *    responses:
  *      200:
  *        description: The client was updated
- *        content:
- *          application/json:
- *            schema:
- *              $ref: '#/components/schemas/Negotiation'
  *      404:
- *        description: The client was not found
+ *        description: Débito não encontrado
  *      500:
- *        description: Some error happened
+ *        description: Algo errado aconteceu
  */
 
-router.put("/:id", (req, res) => {
+router.put("/alterar/debito_id", (req, res) => {
 	try {
 		req.app.db
-			.get("negotiation")
-			.find({ id: req.params.id })
+			.get("debitos")
+			.find({ debito_id: req.params.debito_id })
 			.assign(req.body)
 			.write();
 
-		res.send(req.app.db.get("negotiation").find({ id: req.params.id }));
+		res.send(req.app.db.get("debitos").find({ debito_id: req.params.debito_id }));
 	} catch (error) {
 		return res.status(500).send(error);
 	}
 });
 
-//Remover cliente por ID
+//Remover débito por ID
 /**
  * @swagger
- * /negotiation/{id}:
+ * /debitos/deletar/debito_id:
  *   delete:
- *     summary: Remove the client by id
- *     tags: [Negotiations]
+ *     tags: [Debitos]
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: debito_id
  *         schema:
  *           type: string
  *         required: true
- *         description: The client id
+ *         description: debito_id
  * 
  *     responses:
  *       200:
- *         description: The client was deleted
+ *         description: Registro de débito deletado
  *       404:
- *         description: The client was not found
+ *         description: Debito não encontrado
  */
 
-router.delete("/:id", (req, res) => {
-	req.app.db.get("negotiation").remove({ id: req.params.id }).write();
+router.delete("/deletar/debito_id", (req, res) => {
+	req.app.db.get("debitos").remove({ debito_id: req.params.debito_id }).write();
 
 	res.sendStatus(200);
 });

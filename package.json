@@ -7,18 +7,23 @@
     "dev": "nodemon index.js"
   },
   "nodemonConfig": {
-    "ignore":["db.json","pagueDB.json"]
+    "ignore": [
+      "pagueDB.json"
+    ]
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
+    "date-fns": "^2.22.1",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "lowdb": "^1.0.0",
     "morgan": "^1.10.0",
     "nanoid": "^3.1.20",
     "nodemon": "^2.0.7",
     "swagger-jsdoc": "^6.0.1",
-    "swagger-ui-express": "^4.1.6"
+    "swagger-ui-express": "^4.1.6",
+    "uuid": "^8.3.2"
   }
 }
