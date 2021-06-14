@@ -13,7 +13,7 @@ const FileSync = require("lowdb/adapters/FileSync");
 const adapter = new FileSync("pagueDB.json");
 const db = low(adapter);
 
-db.defaults({ cliente: [] }).write();
+db.defaults({ negotiation: [] }).write();
 
 const options = {
 	definition: {
@@ -44,6 +44,6 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 
-app.use("/negotiation", pagueRouter);
+app.use("/Negotiation", pagueRouter);
 
 app.listen(PORT, () => console.log(`The server is running on port ${PORT}`));

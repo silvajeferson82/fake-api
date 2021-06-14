@@ -5,69 +5,42 @@ const { nanoid } = require("nanoid");
 const idLength = 8;
 
 
-//Lista Todos os Clientes
-/**
- * @swagger
- * components:
- *   schemas:
- *     Cliente:
- *       type: object
- *       required:
- *         - name
- *         - email
- *       properties:
- *         id:
- *           type: string
- *           description: The auto-generated id of the Cliente
- *         name:
- *           type: string
- *           description: Nome do cliente
- *         email:
- *           type: string
- *           description: Email do cliente
- *       example:
- *         id: d5fE_asz
- *         name: Nome Sobrenome
- *         email: "nome@email.com"
- */
-
+//Lista Todos as negociações
  /**
   * @swagger
   * tags:
-  *   name: Clientes
-  *   description: The Customer and Payment Management API
+  *   name: Negotiation
+  *   description: Routes Nogociation
   */
 
 /**
  * @swagger
- * /server:
+ * /negotiation:
  *   get:
- *     summary: Returns the list of all the client`s
- *     tags: [Clientes]
+ *     tags: [Negotiations]
  *     responses:
  *       200:
- *         description: The list of the client's
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Cliente'
+ *                 $ref: '#/components/schemas/Negotiation'
  */
 
 router.get("/", (req, res) => {
-	const cliente = req.app.db.get("cliente");
+	const debito = req.app.db.get("negotiation");
 
-	res.send(cliente);
+	res.send(debito);
 });
 
-//Busca cliente por ID
+//Busca Negociação por ID
 /**
  * @swagger
- * /server/{id}:
+ * /negotiation/{id}:
  *   get:
  *     summary: Get the Cliente by id
- *     tags: [Clientes]
+ *     tags: [Negotiations]
  *     parameters:
  *       - in: path
  *         name: id
@@ -81,56 +54,56 @@ router.get("/", (req, res) => {
  *         contens:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Cliente'
+ *               $ref: '#/components/schemas/Negotiation'
  *       404:
  *         description: The client was not found
  */
 
 router.get("/:id", (req, res) => {
-  const cliente = req.app.db.get("cliente").find({ id: req.params.id }).value();
+  const debito = req.app.db.get("negotiation").find({ id: req.params.id }).value();
 
-  if(!cliente){
+  if(!debito){
     res.sendStatus(404)
   }
 
-	res.send(cliente);
+	res.send(debito);
 });
 
 
 //Cria novo Clientes
 /**
  * @swagger
- * /server:
+ * /negotiation:
  *   post:
  *     summary: Create a new client
- *     tags: [Clientes]
+ *     tags: [Negotiations]
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Cliente'
+ *             $ref: '#/components/schemas/Negotiation'
  *     responses:
  *       200:
  *         description: The client was successfully created
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Cliente'
+ *               $ref: '#/components/schemas/Negociation'
  *       500:
  *         description: Some server error
  */
 
 router.post("/", (req, res) => {
 	try {
-		const cliente = {
+		const debito = {
 			id: nanoid(idLength),
 			...req.body,
 		};
 
-    req.app.db.get("cliente").push(cliente).write();
+    req.app.db.get("negotiation").push(debito).write();
     
-    res.send(cliente)
+    res.send(debito)
 	} catch (error) {
 		return res.status(500).send(error);
 	}
@@ -139,10 +112,10 @@ router.post("/", (req, res) => {
 //Atualizar cliente por ID
 /**
  * @swagger
- * /server/{id}:
+ * /negotiation/{id}:
  *  put:
  *    summary: Update the client by the id
- *    tags: [Clientes]
+ *    tags: [Negotiations]
  *    parameters:
  *      - in: path
  *        name: id
@@ -155,14 +128,14 @@ router.post("/", (req, res) => {
  *      content:
  *        application/json:
  *          schema:
- *            $ref: '#/components/schemas/Cliente'
+ *            $ref: '#/components/schemas/Negotiation'
  *    responses:
  *      200:
  *        description: The client was updated
  *        content:
  *          application/json:
  *            schema:
- *              $ref: '#/components/schemas/Cliente'
+ *              $ref: '#/components/schemas/Negotiation'
  *      404:
  *        description: The client was not found
  *      500:
@@ -172,12 +145,12 @@ router.post("/", (req, res) => {
 router.put("/:id", (req, res) => {
 	try {
 		req.app.db
-			.get("cliente")
+			.get("negotiation")
 			.find({ id: req.params.id })
 			.assign(req.body)
 			.write();
 
-		res.send(req.app.db.get("cliente").find({ id: req.params.id }));
+		res.send(req.app.db.get("negotiation").find({ id: req.params.id }));
 	} catch (error) {
 		return res.status(500).send(error);
 	}
@@ -186,10 +159,10 @@ router.put("/:id", (req, res) => {
 //Remover cliente por ID
 /**
  * @swagger
- * /server/{id}:
+ * /negotiation/{id}:
  *   delete:
  *     summary: Remove the client by id
- *     tags: [Clientes]
+ *     tags: [Negotiations]
  *     parameters:
  *       - in: path
  *         name: id
@@ -206,7 +179,7 @@ router.put("/:id", (req, res) => {
  */
 
 router.delete("/:id", (req, res) => {
-	req.app.db.get("cliente").remove({ id: req.params.id }).write();
+	req.app.db.get("negotiation").remove({ id: req.params.id }).write();
 
 	res.sendStatus(200);
 });

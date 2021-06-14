@@ -1,5 +1,5 @@
 {
-  "debitos": [
+  "negotiation": [
     {
       "usuario_nome": "",
       "usuario_documento": "",
@@ -26,6 +26,5 @@
       "created_at": "",
       "updated_at": ""
     }
-  ],
-  "cliente": []
+  ]
 }
