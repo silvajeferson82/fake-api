@@ -25,11 +25,6 @@ const options = {
 			version: "1.0.0",
 			description: "API criada para dar suporte as aplicações da Pague Direto.",
 		},
-		servers: [
-			{
-				url: "",
-			},
-		],
 	},
 	apis: ["./routes/*.js"],
 };
@@ -46,6 +41,6 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 
-app.use("/Debitos", pagueRouter);
+app.use("/debitos", pagueRouter);
 
 app.listen(PORT);
