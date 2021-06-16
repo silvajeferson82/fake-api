@@ -1,3 +1,4 @@
+require('dotenv/config');
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
@@ -5,7 +6,7 @@ const low = require("lowdb");
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
 const pagueRouter = require("./routes/pagueServer");
-require('dotenv/config');
+
 
 
 const PORT = process.env.PORT || 9107;

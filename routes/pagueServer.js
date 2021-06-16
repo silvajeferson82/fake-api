@@ -325,7 +325,6 @@ router.delete("/deletar/:debito_id", (req, res) => {
  */
 
 router.get("/periodo/:inicial/:final", (req, res) => {
-	console.log(req.params.inicial < req.params.final)
 	const { inicial, final} = req.params;
 
 	const deadline = debito => debito.created_at >= inicial && debito.created_at <= final;
@@ -334,8 +333,8 @@ router.get("/periodo/:inicial/:final", (req, res) => {
 	const debitos_filtrados = debitos.filter(deadline);
 
 
-	if(!!debitos_filtrados){
-		return res.status(404).json({message: "Nao foi encontrado nenhuma registro nesse intervalo"})
+	if(debitos_filtrados == 0){
+		return res.status(404).json({message: "Nao foi encontrado nenhum registro nesse período."})
 	}
 
 	return res.json(debitos_filtrados)
