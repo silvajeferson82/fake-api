@@ -165,13 +165,13 @@ router.get("/listar", (req, res) => {
  *         description: debito_id
  *     responses:
  *       200:
- *         description: Débito encontrado por ID
+ *         description: Registro encontrado por ID
  *         contens:
  *           application/json:
  *             schema:
  *                $ref: '#/components/schemas/Debitos'
  *       404:
- *         description: Débito não encontrado
+ *         description: Registro não encontrado
  */
 
 router.get("/listar/:debito_id", (req, res) => {
@@ -244,10 +244,6 @@ router.post("/registrar", (req, res) => {
  *    responses:
  *      200:
  *        description: Registro alterado com sucesso
- *        content:
- *          application/json:
- *            schema:
- *              $ref: '#/components/schemas/Debitos'
  *      404:
  *        description: Registro não encontrado
  *      500:
@@ -257,10 +253,10 @@ router.post("/registrar", (req, res) => {
 router.put("/alterar/:debito_id", (req, res) => {
 	try {
 		req.app.db
-			.get("debitos")
-			.find({ debito_id: req.params.debito_id })
-			.assign(req.body)
-			.write();
+		.get("debitos")
+		.find({ debito_id: req.params.debito_id })
+		.assign(req.body)
+		.write();
 
 		res.send(req.app.db.get("debitos").find({ debito_id: req.params.debito_id }));
 	} catch (error) {
@@ -290,9 +286,12 @@ router.put("/alterar/:debito_id", (req, res) => {
  */
 
 router.delete("/deletar/:debito_id", (req, res) => {
-	req.app.db.get("debitos").remove({ debito_id: req.params.debito_id }).write();
-
-	res.sendStatus(200);
+	const debito = req.app.db.get("debitos").remove({ debito_id: req.params.debito_id }).write();
+	
+	if(debito == 0){
+		return res.status(404).json({message: "Não foi encontrado registro referente ao debito_id informado"});
+	}
+		return res.send(debito);
 });
 
 /**
