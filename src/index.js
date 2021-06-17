@@ -5,15 +5,15 @@ const morgan = require("morgan");
 const low = require("lowdb");
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
-const pagueRouter = require("./routes/pagueServer");
+const pagueRouter = require("../src/routes/pagueServer");
 
 
 
-const PORT = process.env.PORT || 9107;
+const PORT = process.env.PORT;
 
 const FileSync = require("lowdb/adapters/FileSync");
 
-const adapter = new FileSync("pagueDB.json");
+const adapter = new FileSync("./src/pagueDB.json");
 const db = low(adapter);
 
 db.defaults({ debitos:[] }).write();
@@ -27,7 +27,7 @@ const options = {
 			description: "API criada para dar suporte as aplicações da Pague Direto.",
 		},
 	},
-	apis: ["./routes/*.js"],
+	apis: ["./src/routes/*.js"],
 };
 
 const specs = swaggerJsDoc(options);
